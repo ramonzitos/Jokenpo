@@ -1,11 +1,5 @@
 -- libjokenpo.lua
--- Funcoes para pegar dados
-function raw_input (str)
-  if not str then str = "" end
-  io.write(str)
-  io.flush()
-  return io.stdin:read()
-end
+-- Funcoes para tratar arrays
 function index (arr, elm)
   for i=1, #arr do
     if arr[i] == elm then return i end
@@ -20,14 +14,6 @@ function get_at(arr, num)
     n = num
   end
   return arr[n]
-end
-function input (str)
-  if not str then str = "" end
-  io.write(str)
-  io.flush()
-  num = tonumber(io.stdin:read())
-  if type(num) ~= "number" then error("Não é numero") end
-  return num
 end
 -- Definindo variaveis, a classe, outras funcoes
 Jogo = {}
