@@ -1,12 +1,13 @@
+require "lang"
 require "libjokenpo"
 require "iuplua"
-choi = {"Pedra", "Papel", "Tesoura"}
+langs = {}
+nlangs = {}
+for k,v in pairs(trans) do table.insert(langs, tostring(k)); table.insert(nlangs, trans[tostring(k)].desc) end
 function main()
-  res, cho = iup.GetParam("Escolha sua jogada", nil, "Escolha e tente a sorte: %l|"..table.concat(choi, "|").."|\n", 0)
-  print(res)
+  res, cho = iup.GetParam(trans[clang].escolha_jogada, nil, trans[clang].esc_sorte.." %l|"..table.concat(choi, "|").."|\n", 0)
   if res then
-    print(0)
-    label = iup.label{ title = " A CPU esta escolhendo sua jogada... " }
+    label = iup.label{ title = trans[clang].cpu_escolhendo }
     dlg = iup.dialog{ label; title = "Jokenpo" }
     dlg:show()
     timer = iup.timer{time=2000}
@@ -16,18 +17,23 @@ function main()
       dlg:destroy()
       label = nil
       if jogo:ganhei() then
-	iup.Message("Jokenpo", "Você ganhou!")
+	iup.Message("Jokenpo", trans[clang].ganhou)
       elseif jogo:ganhei() == nil then
-	iup.Message("Jokenpo", "Empate")
+	iup.Message("Jokenpo", trans[clang].empate)
       else
-	iup.Message("Jokenpo", "Você perdeu")
+	iup.Message("Jokenpo", trans[clang].perdeu)
       end
       self.run = "NO"
-      r = iup.Alarm("Jokenpo", "Você quer jogar de novo?", "Sim", "Não")
+      r = iup.Alarm("Jokenpo", trans[clang].jogar_novo, trans[clang].sim, trans[clang].nao)
       if r == 1 then main() end
     end
     timer.run = "YES"
     iup.MainLoop()
   end
 end
-main()
+res, idlang = iup.GetParam("Language", nil, "Choose your language: %l|"..table.concat(nlangs, "|").."|\n", 0)
+if res then
+  clang = langs[idlang+1]
+  choi = {trans[clang].pedra, trans[clang].papel, trans[clang].tesoura}
+  main()
+end
